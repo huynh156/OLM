@@ -13,6 +13,7 @@ using OLM.Data;
 using OLM.Helper;
 using OLM.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace OLM.Controllers
@@ -29,7 +30,7 @@ namespace OLM.Controllers
             _context = context;
             _mapper = mapper;
         }
-
+        [Authorize]
         public IActionResult DashBoard()
         {
             return View("~/Views/User/Student/Dashboard/Index.cshtml");
@@ -176,6 +177,19 @@ namespace OLM.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Dashboard", new { id = user.UserId });
+        }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            return View("~/Views/User/Student/Profile.cshtml");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
         }
     }
 }

@@ -16,7 +16,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Users/Login";  // Đường dẫn đến trang đăng nhập
+        options.LoginPath = "/User/Login";  // Đường dẫn đến trang đăng nhập
         options.AccessDeniedPath = "/Home/AccessDenied";  // Trang truy cập bị từ chối
     });
 
