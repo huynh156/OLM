@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using OLM.ViewModels;
 
 namespace OLM.Data;
 
@@ -160,4 +161,6 @@ public partial class OlmContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<OLM.ViewModels.UserVM> UserVM { get; set; } = default!;
 }

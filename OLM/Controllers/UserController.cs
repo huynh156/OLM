@@ -134,5 +134,48 @@ namespace OLM.Controllers
             }
             return View();
         }
+
+        public IActionResult Edit(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            if (user == null) return NotFound();
+
+            var User = new UserVM
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role,
+                Address = user.Address,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber?.ToString(),
+                ActivationDate = user.CreatedAt,
+                StudentStatus = user.IsActive == true ? "Active" : "Suspended"
+            };
+
+            return View("~/Views/User/Student/Profile.cshtml",User);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, UserVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            if (user == null) return NotFound();
+
+            user.FullName = model.FullName;
+            user.Email = model.Email ?? user.Email;
+            user.Address = model.Address;
+            user.Username = model.Username;
+            user.PhoneNumber = int.TryParse(model.PhoneNumber, out int phone) ? phone : null;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard", new { id = user.UserId });
+        }
     }
 }
