@@ -17,6 +17,8 @@ public partial class Course
 
     public bool? IsPublished { get; set; }
 
+    public string? Image { get; set; }
+
     public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
 
     public virtual User CreatedByNavigation { get; set; } = null!;

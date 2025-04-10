@@ -33,7 +33,7 @@ namespace OLM.Controllers
         [Authorize]
         public IActionResult DashBoard()
         {
-            return View("~/Views/User/Student/Dashboard/Index.cshtml");
+            return View("~/Views/User/Student/Dashboard.cshtml");
         }
 
         // GET: Users
@@ -182,8 +182,10 @@ namespace OLM.Controllers
         [Authorize]
         public IActionResult Profile()
         {
+            
             return View("~/Views/User/Student/Profile.cshtml");
         }
+
 
         [Authorize]
         public async Task<IActionResult> Logout()

@@ -74,6 +74,9 @@ public partial class OlmContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Image)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.IsPublished).HasDefaultValue(false);
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Courses)
@@ -162,5 +165,5 @@ public partial class OlmContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-public DbSet<OLM.ViewModels.UserVM> UserVM { get; set; } = default!;
+public DbSet<OLM.ViewModels.CourseVM> CourseVM { get; set; } = default!;
 }
