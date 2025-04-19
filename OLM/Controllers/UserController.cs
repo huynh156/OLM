@@ -13,6 +13,7 @@ using OLM.Data;
 using OLM.Helper;
 using OLM.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace OLM.Controllers
@@ -29,10 +30,10 @@ namespace OLM.Controllers
             _context = context;
             _mapper = mapper;
         }
-
+        [Authorize]
         public IActionResult DashBoard()
         {
-            return View("~/Views/User/Student/Dashboard/Index.cshtml");
+            return View("~/Views/User/Student/Dashboard.cshtml");
         }
 
         // GET: Users
@@ -54,7 +55,7 @@ namespace OLM.Controllers
             ViewBag.ReturnUrl = ReturnURL;
             if (ModelState.IsValid)
             {
-                var user = _context.Users.SingleOrDefault(user => user.Username == model.UserName);
+                var user = _context.Users.SingleOrDefault(user => user.Email == model.Email);
                 if (user == null)
                 {
                     ModelState.AddModelError("Error","Does't have this student");
@@ -133,6 +134,64 @@ namespace OLM.Controllers
                 }
             }
             return View();
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            if (user == null) return NotFound();
+
+            var User = new UserVM
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = user.Role,
+                Address = user.Address,
+                Username = user.Username,
+                PhoneNumber = user.PhoneNumber?.ToString(),
+                ActivationDate = user.CreatedAt,
+                StudentStatus = user.IsActive == true ? "Active" : "Suspended"
+            };
+
+            return View("~/Views/User/Student/Profile.cshtml",User);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, UserVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+            if (user == null) return NotFound();
+
+            user.FullName = model.FullName;
+            user.Email = model.Email ?? user.Email;
+            user.Address = model.Address;
+            user.Username = model.Username;
+            user.PhoneNumber = int.TryParse(model.PhoneNumber, out int phone) ? phone : null;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard", new { id = user.UserId });
+        }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            
+            return View("~/Views/User/Student/Profile.cshtml");
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
         }
     }
 }

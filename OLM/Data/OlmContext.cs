@@ -58,6 +58,8 @@ public partial class OlmContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DocumentLink).HasMaxLength(255);
+            entity.Property(e => e.VideoLink).HasMaxLength(255);
 
             entity.HasOne(d => d.Course).WithMany(p => p.Chapters)
                 .HasForeignKey(d => d.CourseId)
@@ -73,6 +75,9 @@ public partial class OlmContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Image)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.IsPublished).HasDefaultValue(false);
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Courses)

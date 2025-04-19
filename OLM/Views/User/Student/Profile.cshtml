@@ -1,0 +1,81 @@
+﻿@model OLM.ViewModels.UserVM
+
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+
+</head>
+
+<body>
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="card p-4">
+                    <div class="text-center mb-4">
+                        <img src="/images/avatar.png" class="avatar" alt="User Avatar">
+                        <h2 class="mt-2">@Model.FullName</h2>
+                    </div>
+                    <form asp-action="Edit">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Username" class="form-label"></label>
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Role" class="form-label"></label>
+                                <input asp-for="Role" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CreatedAt" class="form-label"></label>
+                                <input asp-for="CreatedAt" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StudentStatus" class="form-label"></label>
+                                <input asp-for="StudentStatus" class="form-control" disabled />
+                                <span asp-validation-for="StudentStatus" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="/Account/ChangePassword" class="btn btn-link">Đổi mật khẩu</a>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

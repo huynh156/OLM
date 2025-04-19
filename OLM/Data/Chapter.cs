@@ -17,6 +17,10 @@ public partial class Chapter
 
     public DateTime? CreatedAt { get; set; }
 
+    public string? VideoLink { get; set; }
+
+    public string? DocumentLink { get; set; }
+
     public virtual Course Course { get; set; } = null!;
 
     public virtual ICollection<Topic> Topics { get; set; } = new List<Topic>();
