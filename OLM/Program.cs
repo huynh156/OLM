@@ -1,9 +1,25 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using OLM.Data;
 using OLM.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
+// Initialize Firebase Admin SDK
+try
+{
+    FirebaseApp.Create(new AppOptions()
+    {
+        Credential = GoogleCredential.FromFile("D:\\source\\OLM\\OLM\\olm-project-8b75a-firebase-adminsdk-fbsvc-2c7f058257.json"),
+    });
+    Console.WriteLine("Firebase Admin SDK initialized successfully.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error initializing Firebase Admin SDK: {ex.Message}");
+    // Handle the error appropriately, perhaps log it and prevent further Firebase operations
+}
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

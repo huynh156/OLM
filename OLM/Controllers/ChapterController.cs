@@ -9,23 +9,23 @@ using OLM.Data;
 
 namespace OLM.Controllers
 {
-    public class CoursesController : Controller
+    public class ChapterController : Controller
     {
         private readonly OlmContext _context;
 
-        public CoursesController(OlmContext context)
+        public ChapterController(OlmContext context)
         {
             _context = context;
         }
 
-        // GET: Courses
+        // GET: Chapters
         public async Task<IActionResult> Index()
         {
-            var olmContext = _context.Courses.Include(c => c.CreatedByNavigation);
+            var olmContext = _context.Chapters.Include(c => c.Course);
             return View(await olmContext.ToListAsync());
         }
 
-        // GET: Courses/Details/5
+        // GET: Chapters/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,42 +33,42 @@ namespace OLM.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .Include(c => c.CreatedByNavigation)
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (course == null)
+            var chapter = await _context.Chapters
+                .Include(c => c.Course)
+                .FirstOrDefaultAsync(m => m.ChapterId == id);
+            if (chapter == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(chapter);
         }
 
-        // GET: Courses/Create
+        // GET: Chapters/Create
         public IActionResult Create()
         {
-            ViewData["CreatedBy"] = new SelectList(_context.Users, "UserId", "UserId");
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId");
             return View();
         }
 
-        // POST: Courses/Create
+        // POST: Chapters/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,CourseName,Description,CreatedBy,CreatedAt,IsPublished,Image")] Course course)
+        public async Task<IActionResult> Create([Bind("ChapterId,CourseId,ChapterName,Description,OrderIndex,CreatedAt")] Chapter chapter)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
+                _context.Add(chapter);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedBy"] = new SelectList(_context.Users, "UserId", "UserId", course.CreatedBy);
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", chapter.CourseId);
+            return View(chapter);
         }
 
-        // GET: Courses/Edit/5
+        // GET: Chapters/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,23 +76,23 @@ namespace OLM.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var chapter = await _context.Chapters.FindAsync(id);
+            if (chapter == null)
             {
                 return NotFound();
             }
-            ViewData["CreatedBy"] = new SelectList(_context.Users, "UserId", "UserId", course.CreatedBy);
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", chapter.CourseId);
+            return View(chapter);
         }
 
-        // POST: Courses/Edit/5
+        // POST: Chapters/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseName,Description,CreatedBy,CreatedAt,IsPublished,Image")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("ChapterId,CourseId,ChapterName,Description,OrderIndex,CreatedAt")] Chapter chapter)
         {
-            if (id != course.CourseId)
+            if (id != chapter.ChapterId)
             {
                 return NotFound();
             }
@@ -101,12 +101,12 @@ namespace OLM.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    _context.Update(chapter);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.CourseId))
+                    if (!ChapterExists(chapter.ChapterId))
                     {
                         return NotFound();
                     }
@@ -117,11 +117,11 @@ namespace OLM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedBy"] = new SelectList(_context.Users, "UserId", "UserId", course.CreatedBy);
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseId", chapter.CourseId);
+            return View(chapter);
         }
 
-        // GET: Courses/Delete/5
+        // GET: Chapters/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,35 +129,35 @@ namespace OLM.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .Include(c => c.CreatedByNavigation)
-                .FirstOrDefaultAsync(m => m.CourseId == id);
-            if (course == null)
+            var chapter = await _context.Chapters
+                .Include(c => c.Course)
+                .FirstOrDefaultAsync(m => m.ChapterId == id);
+            if (chapter == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(chapter);
         }
 
-        // POST: Courses/Delete/5
+        // POST: Chapters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course != null)
+            var chapter = await _context.Chapters.FindAsync(id);
+            if (chapter != null)
             {
-                _context.Courses.Remove(course);
+                _context.Chapters.Remove(chapter);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+        private bool ChapterExists(int id)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            return _context.Chapters.Any(e => e.ChapterId == id);
         }
     }
 }

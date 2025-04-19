@@ -12,10 +12,11 @@
                      class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form asp-action="Login" asp-controller="User" asp-route-ReturnURL="@ViewBag.ReturnUrl">
+                <form id="registerForm" asp-action="Login" asp-controller="User" asp-route-ReturnURL="@ViewBag.ReturnUrl">
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                         <p class="lead fw-normal mb-0 me-3">Sign in with</p>
                         <div class="g-signin2" data-onsuccess="onSignIn"></div> 
+                            
                         <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
                             <i class="fab fa-facebook-f"></i>
                         </button>
@@ -34,9 +35,9 @@
                     </div>
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input asp-for="@Model.UserName" type="text id=" form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" />
-                        <label asp-for="@Model.UserName" class="form-label" for="form3Example3">Username</label>
-                        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+                        <input asp-for="@Model.Email" type="text id=" form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" />
+                        <label asp-for="@Model.Email" class="form-label" for="form3Example3">Username</label>
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
                     </div>
 
                     <!-- Password input -->
@@ -62,15 +63,46 @@
                                 style="padding-left: 2.5rem; padding-right: 2.5rem;">
                             Login
                         </button>
+                        <div id="errorMessage" class="text-danger"></div>
+                </form>
                         <p class="small fw-bold mt-2 pt-1 mb-0">
                             Don't have an account? <a href="#!"
                                                       class="link-danger">Register</a>
                         </p>
                     </div>
 
-                </form>
+            <div id="firebaseui-auth-container">
+                <button id="googleSignInButton" class="btn btn-danger">Đăng nhập bằng Google</button>
             </div>
+        
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="~/js/firebase-config.js"></script>
+    <script src="~/js/auth.js"></script>
+}
+<script>
+    const registerForm = document.getElementById('registerForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const auth = firebase.auth();
+
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            console.log("User registered:", user);
+            // Redirect User after registered
+            window.location.href = "/"; 
+        } catch (error) {
+            console.error("Error registering user:", error);
+            errorMessage.textContent = error.message; 
+        }
+    });
+</script>
 

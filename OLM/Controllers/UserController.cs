@@ -55,7 +55,7 @@ namespace OLM.Controllers
             ViewBag.ReturnUrl = ReturnURL;
             if (ModelState.IsValid)
             {
-                var user = _context.Users.SingleOrDefault(user => user.Username == model.UserName);
+                var user = _context.Users.SingleOrDefault(user => user.Email == model.Email);
                 if (user == null)
                 {
                     ModelState.AddModelError("Error","Does't have this student");

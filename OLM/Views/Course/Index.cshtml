@@ -1,0 +1,66 @@
+﻿@model IEnumerable<OLM.Data.Course>
+
+@{
+    ViewData["Title"] = "Course";
+}
+<table class="table">
+    <div class="section courses" id="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-heading">
+                        <h6>Latest Courses</h6>
+                        <h2>Latest Courses</h2>
+                    </div>
+                </div>
+            </div>
+            <ul class="event_filter">
+                <li>
+                    <a class="is_active" href="#!" data-filter="*">Show All</a>
+                </li>
+                <li>
+                    <a href="#!" data-filter=".design">Webdesign</a>
+                </li>
+                <li>
+                    <a href="#!" data-filter=".development">Development</a>
+                </li>
+                <li>
+                    <a href="#!" data-filter=".wordpress">Wordpress</a>
+                </li>
+            </ul>
+            @foreach (var item in Model) {
+
+                <div class="container py-4">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <div class="card border rounded-4 overflow-hidden shadow">
+                                <div class="row g-0">
+                                    <div class="col-md-5">
+                                        <img src="/images/data-science-course.jpg" alt="Course Image" class="img-fluid h-100 w-100 object-fit-cover" style="object-fit: cover; height: 100%;">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="p-4">
+                                            <span class="badge bg-light text-dark fw-semibold mb-2">PROGRAMMING</span>
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h5 class="fw-bold text-dark">@item.CourseName</h5>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-bar-chart-fill text-warning me-2"></i>
+                                                <span class="me-3 small">Beginner</span>
+                                                <i class="bi bi-clock-fill text-warning me-2"></i>
+                                                <span class="me-3 small">110 Hours</span>
+                                                <i class="bi bi-star-fill text-warning me-2"></i>
+                                                <span class="small">4.7 (3 reviews)</span>
+                                            </div>
+                                            <a>@item.CreatedByNavigation.FullName</a>
+                                            <a asp-controller="Chapter" asp-action="Index" asp-route-id="@item.CourseId" class="text-decoration-none fw-semibold text-primary">View Course <i class="bi bi-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+    </div>
+</table>
