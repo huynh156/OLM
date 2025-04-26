@@ -146,7 +146,7 @@ namespace OLM.Controllers
             return View(enrollment);
         }
 
-        // POST: Enrollment/Delete/5
+        // POST: Enrollment/Delete/6
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
