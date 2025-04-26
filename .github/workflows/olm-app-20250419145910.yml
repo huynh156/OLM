@@ -2,7 +2,7 @@ name: Build and deploy .NET application to container app olm-app-20250419145910
 on:
   push:
     branches:
-    - main
+    - master
 env:
   CONTAINER_APP_CONTAINER_NAME: olm
   CONTAINER_APP_NAME: olm-app-20250419145910
