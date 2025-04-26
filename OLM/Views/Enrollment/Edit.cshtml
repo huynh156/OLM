@@ -1,0 +1,58 @@
+﻿@model OLM.Data.Enrollment
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+
+<h4>Enrollment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EnrollmentId" />
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseId" class="control-label"></label>
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                <span asp-validation-for="CourseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnrolledAt" class="control-label"></label>
+                <input asp-for="EnrolledAt" class="form-control" />
+                <span asp-validation-for="EnrolledAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Progress" class="control-label"></label>
+                <input asp-for="Progress" class="form-control" />
+                <span asp-validation-for="Progress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+</body>
+</html>
